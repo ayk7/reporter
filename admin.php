@@ -31,13 +31,13 @@ $sn = isset($_REQUEST['sn']) ? (int) ($_REQUEST['sn']) : 0; //filter number (for
 //     // $sn = $db->insert_id;
 //     // header("location: index.php?sn={$sn}");
 //     // exit; //
-//     $sn = insert_artical();
+//     $sn = insert_article();
 //     header("location: index.php?sn={$sn}");
 //     exit; //轉向後要停止才不會繼續執行下面程式
 // }
 switch ($op) {
     case 'insert':
-        $sn = insert_artical();
+        $sn = insert_article();
         header("location: index.php?sn={$sn}");
         exit; //轉向後要停止才不會繼續執行下面程式
     // break; //轉向後用exit而非break
@@ -47,6 +47,13 @@ switch ($op) {
         exit; //轉向後要停止才不會繼續執行下面程式
     case 'article_form';
         break;
+    case 'modify_article'; //11/25
+        show_article($sn);
+        break;
+    case 'update': //11/25 update
+        update_article($sn);
+        header("location: index.php?sn={$sn}");
+        exit; //轉向後要停止才不會繼續執行下面程式
 
     default:
         # code...
@@ -74,7 +81,7 @@ require_once 'footer.php'; //載入檔尾
 // }
 
 // 新增進資料庫
-function insert_artical()
+function insert_article()
 {
     global $db;
     $title    = $db->real_escape_string($_POST['title']);
@@ -85,6 +92,51 @@ function insert_artical()
     $db->query($sql) or die($db->error);
     $sn = $db->insert_id;
 
+    upload_pic($sn); //11/25
+    // 非上傳工具
+    // $ext = pathinfo($_FILES['pic']['name'], PATHINFO_EXTENSION); //取得附檔名
+    // //判斷資料夾存在否
+    // if (!is_dir('uploads')) {
+    //     mkdir('uploads');
+    // }
+    // move_uploaded_file($_FILES['pic']['tmp_name'], "uploads/{$sn}.{$ext}"); //上傳檔案前先改檔名避免出錯
+
+    // return $sn;
+}
+
+// 更新資料庫11/25
+function update_article($sn)
+{
+    global $db;
+    $title    = $db->real_escape_string($_POST['title']);
+    $content  = $db->real_escape_string($_POST['content']);
+    $username = $db->real_escape_string($_POST['username']); //加入username欄位&插入sql. 11/18
+    // send request
+    $sql = "UPDATE `article` SET `title`='{$title}', `content`='{$content}', `update_time`=now() WHERE `sn`='{$sn}' and username='{$_SESSION[username]}'";
+    $db->query($sql) or die($db->error);
+
+    upload_pic($sn); //11/25
+
+    return $sn;
+}
+
+// 刪除資料11/18
+function delete_artical($sn)
+{
+    global $db;
+    // send request
+    $sql = "DELETE FROM `article` WHERE sn='{$sn}' and username='{$_SESSION[username]}'";
+    $db->query($sql) or die($db->error);
+    // Delete pic 1125
+    if (file_exists("uploads/cover_{$sn}.png")) {
+        unlink("uploads/cover_{$sn}.png");
+        unlink("uploads/thumb_{$sn}.png");
+    }
+}
+
+function upload_pic($sn)
+{
+    //11/25獨立function
     // 判斷是否有檔案 11/18
     if (isset($_FILES)) {
 
@@ -108,22 +160,6 @@ function insert_artical()
                 $foo->Process('uploads/');
             }
         }
-        // 非上傳工具
-        // $ext = pathinfo($_FILES['pic']['name'], PATHINFO_EXTENSION); //取得附檔名
-        // //判斷資料夾存在否
-        // if (!is_dir('uploads')) {
-        //     mkdir('uploads');
-        // }
-        // move_uploaded_file($_FILES['pic']['tmp_name'], "uploads/{$sn}.{$ext}"); //上傳檔案前先改檔名避免出錯
-    }
-    return $sn;
-}
 
-// 刪除資料11/18
-function delete_artical($sn)
-{
-    global $db;
-    // send request
-    $sql = "DELETE FROM `article` WHERE sn='{$sn}' and username='{$_SESSION[username]}'";
-    $db->query($sql) or die($db->error);
+    }
 }
