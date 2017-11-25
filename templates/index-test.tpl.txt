@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"> -->
+    <!-- add shrink-to-fit=no for iphone user, because IOS change initial-scale meaning-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Title</title>
+    <!-- online bootstrap.min.css -->
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+        crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- icon/font css -->
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <!-- put self-define css -->
+    <link rel="stylesheet" href="css/my.css">
+
+</head>
+
+<body>
+    <div class="container">
+        <!-- <h1 style="color:red;">{$title}<small>{$now}</small></h1> -->
+        <!-- <h1 style="color:{$color};">{$title}<small>{$now}</small></h1> -->
+        <h1 style="color: {$color};">{$title} <small>({$now})</small></h1>
+
+        <!-- <p>hi</p> -->
+        <form action="index.php" method="post">
+            <!-- Remember to change class="post" to method="post" -->
+            <div class="form-group">
+                <label for="title">標題</label>
+                <input type="text" name="title" id="title" class="form-control" placeholder="" aria-describedby="helpId">
+            </div>
+            <div class="form-group">
+                <label for="color">標題顏色</label>
+                <input type="color" name="color" id="color" class="form-control" placeholder="" aria-describedby="helpId">
+            </div>
+            <button type="submit" class="btn btn-primary">送出</button>
+        </form>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+        crossorigin="anonymous"></script> -->
+    <!-- online bootstrap.min.css -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

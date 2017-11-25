@@ -1,0 +1,12 @@
+<?php
+require_once 'smarty/libs/Smarty.class.php';
+$smarty = new Smarty;
+$title  = $_POST['title']; // '尚無文章標題';
+$smarty->assign('title', $title);
+
+$color = $_POST['color'];
+$smarty->assign('color', $color);
+
+$smarty->assign('now', date('Y/m/d h:i:s A l'));
+// $smarty->assign('color', $_GET['c']);
+$smarty->display('index.tpl');
